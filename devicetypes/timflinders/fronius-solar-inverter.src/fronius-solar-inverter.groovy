@@ -12,6 +12,11 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  * 
+ *
+ *  Help
+ *
+ *  To use this DeviceType you currently will need to enter the InverterNumber (usually 1 if you have a single inverter) the
+ *  IP Address of the Device and the IP Port (usually port 80)
  */
  
 import groovy.json.JsonSlurper
