@@ -12,11 +12,6 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  * 
- *
- *  Help
- *
- *  To use this DeviceType you currently will need to enter the InverterNumber (usually 1 if you have a single inverter) the
- *  IP Address of the Device and the IP Port (usually port 80)
  */
  
 import groovy.json.JsonSlurper
@@ -44,10 +39,10 @@ metadata {
 			state "poll", label: "", action: "polling.poll", icon: "st.secondary.refresh", backgroundColor: "#FFFFFF"
 		}
         valueTile("power", "device.power", inactiveLabel: false) {
-			state "default", label:'${currentValue} W'
+			state "default", label:'${currentValue} W', unit:""
 		}
         valueTile("energy", "device.energy", inactiveLabel: false) {
-			state "default", label:'${currentValue} Wh'
+			state "energy", label:'${currentValue} Wh', unit:""
 		}
         valueTile("YearValue", "device.YearValue", inactiveLabel: false) {
 			state "YearValue", label:'${currentValue} Wh', unit:""
@@ -63,7 +58,10 @@ metadata {
 
 def initialize() {
 	log.info "Fronius Inverter ${textVersion()} ${textCopyright()}"
-
+    sendEvent(name: "power", value: 0	)
+    sendEvent(name: "YearValue", value: 0 )
+    sendEvent(name: "energy", value: 0 )
+    sendEvent(name: "TotalValue", value: 0 )
 	poll()
 }
 
@@ -85,7 +83,7 @@ def parse(String description) {
     def totalValue = result.Body.Data.TOTAL_ENERGY.Values."$inverterNumber"
         
     [name: "power", value: Math.round(power), unit: "W"]
-    [name: "energy", value: dayValue, unit: "Wh"]
+    [name: "energy", value: dayValue, unit: "kWh"]
         
     sendEvent(name: "power", value: power	)
     sendEvent(name: "energy", value: dayValue )
